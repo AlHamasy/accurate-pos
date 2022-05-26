@@ -24,4 +24,10 @@ class LocalDataSource private constructor(private val contentDao: ContentDao){
 
     fun insertCities(cities : List<CityEntity>) = contentDao.insertCities(cities)
 
+    fun sortByName() : DataSource.Factory<Int, UserEntity> = contentDao.sortByName()
+
+    fun sortByCity(city : String) : DataSource.Factory<Int, UserEntity> = contentDao.sortByCity(city)
+
+    fun searchByName(name : String) : DataSource.Factory<Int, UserEntity> = contentDao.searchByName(name)
+
 }

@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import id.accurate.pos.data.local.entity.UserEntity
 import id.accurate.pos.databinding.ItemRowUserBinding
 
-class UserAdapter : PagedListAdapter<UserEntity, UserAdapter.MyViewHolder>(DIFF_CALLBACK) {
+class MainAdapter : PagedListAdapter<UserEntity, MainAdapter.MyViewHolder>(DIFF_CALLBACK) {
 
     companion object{
         private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<UserEntity>(){
@@ -21,12 +21,12 @@ class UserAdapter : PagedListAdapter<UserEntity, UserAdapter.MyViewHolder>(DIFF_
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserAdapter.MyViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainAdapter.MyViewHolder {
         val itemRowUserBinding = ItemRowUserBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MyViewHolder(itemRowUserBinding)
     }
 
-    override fun onBindViewHolder(holder: UserAdapter.MyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MainAdapter.MyViewHolder, position: Int) {
         val user = getItem(position)
         if (user != null){
             holder.bind(user)
@@ -40,6 +40,7 @@ class UserAdapter : PagedListAdapter<UserEntity, UserAdapter.MyViewHolder>(DIFF_
                 tvCity.text = user.city
                 tvAddress.text = user.address
                 tvPhone.text = user.phoneNumber
+                tvEmail.text = user.email
             }
         }
     }

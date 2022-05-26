@@ -24,4 +24,8 @@ data class UserEntity(
 
     @ColumnInfo(name = "city")
     var city : String,
+
+    @ColumnInfo(name = "email")
+    var email : String
+
 )

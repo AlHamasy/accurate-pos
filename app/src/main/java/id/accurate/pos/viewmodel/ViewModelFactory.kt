@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import id.accurate.pos.di.Injection
 import id.accurate.pos.repository.ContentRepository
+import id.accurate.pos.ui.insert.InsertUserViewModel
 import id.accurate.pos.ui.main.MainViewModel
 
 class ViewModelFactory private constructor(private val contentRepository: ContentRepository) : ViewModelProvider.NewInstanceFactory(){
@@ -22,12 +23,14 @@ class ViewModelFactory private constructor(private val contentRepository: Conten
 
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return when{
-            modelClass.isAssignableFrom(MainViewModel::class.java) ->{
+            modelClass.isAssignableFrom(MainViewModel::class.java) -> {
                 MainViewModel(contentRepository) as T
+            }
+            modelClass.isAssignableFrom(InsertUserViewModel::class.java) -> {
+                InsertUserViewModel(contentRepository) as T
             }
             else -> throw Throwable("Unknown ViewModel class: " + modelClass.name)
         }
     }
-
 
 }

@@ -23,4 +23,13 @@ interface ContentDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCities(cities : List<CityEntity>)
 
+    @Query("SELECT * FROM `user-entity` ORDER BY name COLLATE NOCASE")
+    fun sortByName() : DataSource.Factory<Int, UserEntity>
+
+    @Query("SELECT * FROM `user-entity` WHERE city LIKE :city")
+    fun sortByCity(city : String) : DataSource.Factory<Int, UserEntity>
+
+    @Query("SELECT * FROM `user-entity` WHERE name LIKE '%' || :name || '%'")
+    fun searchByName(name : String) : DataSource.Factory<Int, UserEntity>
+
 }

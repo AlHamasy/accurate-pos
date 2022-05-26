@@ -45,11 +45,12 @@ class ContentRepository private constructor(private val remoteDataSource : Remot
             override fun saveCallResult(data: List<ResponseUsersItem>) {
                 val userList = ArrayList<UserEntity>()
                 for (user in data){
-                    val userEntity = UserEntity(user.id ?: "0",
+                    val userEntity = UserEntity(user.id ?: "",
                                                 user.name ?: "",
                                             user.address ?:"",
                                         user.phoneNumber ?: "",
-                                                user.city ?: "")
+                                                user.city ?: "",
+                                                user.email ?: "")
 
                     userList.add(userEntity)
                 }
@@ -59,7 +60,6 @@ class ContentRepository private constructor(private val remoteDataSource : Remot
     }
 
     override fun getCities(): LiveData<Resource<PagedList<CityEntity>>> {
-
         return object : NetworkBoundResource<PagedList<CityEntity>, List<ResponseCitiesItem>>(appExecutors){
             override fun loadFromDB(): LiveData<PagedList<CityEntity>> {
                 val config = PagedList.Config.Builder()
@@ -80,12 +80,78 @@ class ContentRepository private constructor(private val remoteDataSource : Remot
                 val cityList = ArrayList<CityEntity>()
                 for (city in data){
                     val cityEntity = CityEntity(city.id ?: "",
-                                                city.name ?: "")
+                                             city.name ?: "")
                     cityList.add(cityEntity)
                 }
                 localDataSource.insertCities(cityList)
             }
         }.asLiveData()
+    }
 
+    override fun sortByName(): LiveData<Resource<PagedList<UserEntity>>> {
+        return object : NetworkBoundResource<PagedList<UserEntity>, List<ResponseUsersItem>>(appExecutors){
+            override fun loadFromDB(): LiveData<PagedList<UserEntity>> {
+                val config = PagedList.Config.Builder()
+                                                .setEnablePlaceholders(false)
+                                                .setInitialLoadSizeHint(6)
+                                                .setPageSize(6)
+                                                .build()
+                return LivePagedListBuilder(localDataSource.sortByName(), config).build()
+            }
+            override fun shouldFetch(data: PagedList<UserEntity>?): Boolean {
+                return data == null || data.isEmpty()
+            }
+            override fun createCall(): LiveData<ApiResponse<List<ResponseUsersItem>>> {
+                return remoteDataSource.getUsers()
+            }
+            override fun saveCallResult(data: List<ResponseUsersItem>) {
+
+            }
+        }.asLiveData()
+    }
+
+    override fun sortByCity(city : String): LiveData<Resource<PagedList<UserEntity>>> {
+
+        return object : NetworkBoundResource<PagedList<UserEntity>, List<ResponseUsersItem>>(appExecutors){
+            override fun loadFromDB(): LiveData<PagedList<UserEntity>> {
+                val config = PagedList.Config.Builder()
+                                                .setEnablePlaceholders(false)
+                                                .setInitialLoadSizeHint(6)
+                                                .setPageSize(6)
+                                                .build()
+                return LivePagedListBuilder(localDataSource.sortByCity(city), config).build()
+            }
+            override fun shouldFetch(data: PagedList<UserEntity>?): Boolean {
+                return data == null || data.isEmpty()
+            }
+            override fun createCall(): LiveData<ApiResponse<List<ResponseUsersItem>>> {
+                return remoteDataSource.getUsers()
+            }
+            override fun saveCallResult(data: List<ResponseUsersItem>) {
+
+            }
+        }.asLiveData()
+    }
+
+    override fun searchByName(name : String): LiveData<Resource<PagedList<UserEntity>>> {
+        return object : NetworkBoundResource<PagedList<UserEntity>, List<ResponseUsersItem>>(appExecutors){
+            override fun loadFromDB(): LiveData<PagedList<UserEntity>> {
+                val config = PagedList.Config.Builder()
+                                                .setEnablePlaceholders(false)
+                                                .setInitialLoadSizeHint(6)
+                                                .setPageSize(6)
+                                                .build()
+                return LivePagedListBuilder(localDataSource.searchByName(name), config).build()
+            }
+            override fun shouldFetch(data: PagedList<UserEntity>?): Boolean {
+                return data == null || data.isEmpty()
+            }
+            override fun createCall(): LiveData<ApiResponse<List<ResponseUsersItem>>> {
+                return remoteDataSource.getUsers()
+            }
+            override fun saveCallResult(data: List<ResponseUsersItem>) {
+
+            }
+        }.asLiveData()
     }
 }

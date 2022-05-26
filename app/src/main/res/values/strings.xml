@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Accurate POS</string>
+    <string name="error_message">Something error, please try again later</string>
 </resources>
