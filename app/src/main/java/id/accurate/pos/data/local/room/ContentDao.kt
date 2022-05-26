@@ -1,5 +1,6 @@
 package id.accurate.pos.data.local.room
 
+import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.room.Dao
 import androidx.room.Insert
@@ -18,7 +19,7 @@ interface ContentDao {
     fun insertUsers(users : List<UserEntity>)
 
     @Query("SELECT * FROM `city-entity`")
-    fun getCities() : DataSource.Factory<Int, CityEntity>
+    fun getCities() : LiveData<List<CityEntity>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertCities(cities : List<CityEntity>)

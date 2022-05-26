@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/menu_sort_name"
@@ -9,8 +10,15 @@
         android:id="@+id/menu_sort_city"
         android:title="Filter by city"/>
 
+<!--    <item-->
+<!--        android:id="@+id/menu_search_name"-->
+<!--        android:title="Search by name"/>-->
+
     <item
         android:id="@+id/menu_search_name"
-        android:title="Search by name"/>
+        android:icon="@android:drawable/ic_menu_search"
+        app:showAsAction="always"
+        app:actionViewClass="android.widget.SearchView"
+        android:title="Search"/>
 
 </menu>

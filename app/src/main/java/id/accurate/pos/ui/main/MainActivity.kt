@@ -1,11 +1,17 @@
 package id.accurate.pos.ui.main
 
+import android.content.DialogInterface
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.SearchView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import id.accurate.pos.R
@@ -36,13 +42,32 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
+
+        val menuItem = menu?.findItem(R.id.menu_search_name)
+        val searchView = menuItem?.actionView as SearchView
+        searchView.queryHint = "Search by name"
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(p0: String): Boolean {
+                return false
+            }
+            override fun onQueryTextChange(p0: String): Boolean {
+                searchByName(p0)
+                return true
+            }
+        })
+
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
         when(item.itemId){
-            R.id.menu_search_name -> searchByName("na")
-            R.id.menu_sort_city -> sortByCity("Malang")
+           // R.id.menu_sort_city -> sortByCity("Malang")
+            R.id.menu_sort_city -> {
+                //showListCity(showCities())
+                //getCities()
+                showCities()
+            }
             R.id.menu_sort_name -> sortByName()
         }
         return super.onOptionsItemSelected(item)
@@ -54,14 +79,16 @@ class MainActivity : AppCompatActivity() {
             if (it != null) {
                 when (it.status) {
                     Status.LOADING -> {
-
+                        showLoading(true)
                     }
                     Status.SUCCESS -> {
+                        showLoading(false)
                         mainAdapter.submitList(it.data)
                         showRecyclerView(mainAdapter)
                     }
                     Status.ERROR -> {
-                        Toast.makeText(this, resources.getString(R.string.error_message), Toast.LENGTH_SHORT).show()
+                        showLoading(false)
+                        showToast(resources.getString(R.string.error_message))
                     }
                 }
             }
@@ -74,14 +101,16 @@ class MainActivity : AppCompatActivity() {
             if (it != null) {
                 when (it.status) {
                     Status.LOADING -> {
-
+                        showLoading(true)
                     }
                     Status.SUCCESS -> {
+                        showLoading(false)
                         mainAdapter.submitList(it.data)
                         showRecyclerView(mainAdapter)
                     }
                     Status.ERROR -> {
-                        Toast.makeText(this, resources.getString(R.string.error_message), Toast.LENGTH_SHORT).show()
+                        showLoading(false)
+                        showToast(resources.getString(R.string.error_message))
                     }
                 }
             }
@@ -94,14 +123,16 @@ class MainActivity : AppCompatActivity() {
             if (it != null) {
                 when (it.status) {
                     Status.LOADING -> {
-
+                        showLoading(true)
                     }
                     Status.SUCCESS -> {
+                        showLoading(false)
                         mainAdapter.submitList(it.data)
                         showRecyclerView(mainAdapter)
                     }
                     Status.ERROR -> {
-                        Toast.makeText(this, resources.getString(R.string.error_message), Toast.LENGTH_SHORT).show()
+                        showLoading(false)
+                        showToast(resources.getString(R.string.error_message))
                     }
                 }
             }
@@ -114,14 +145,16 @@ class MainActivity : AppCompatActivity() {
             if (it != null) {
                 when (it.status) {
                     Status.LOADING -> {
-
+                        showLoading(true)
                     }
                     Status.SUCCESS -> {
+                        showLoading(false)
                         mainAdapter.submitList(it.data)
                         showRecyclerView(mainAdapter)
                     }
                     Status.ERROR -> {
-                        Toast.makeText(this, resources.getString(R.string.error_message), Toast.LENGTH_SHORT).show()
+                        showLoading(false)
+                        showToast(resources.getString(R.string.error_message))
                     }
                 }
             }
@@ -136,10 +169,66 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun showLoading(show : Boolean){
+        if (show) binding.progressBar.visibility = View.VISIBLE
+        else binding.progressBar.visibility = View.GONE
+    }
+
+    private fun showToast(msg : String){
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+    }
 
     override fun onRestart() {
         super.onRestart()
         firstLoad()
+    }
+
+    private fun showCities(){
+        val cities = ArrayList<String>()
+        viewModel.getCities().observe(this, Observer {
+            if (it != null) {
+                when (it.status) {
+                    Status.LOADING -> {
+
+                    }
+                    Status.SUCCESS -> {
+                        it.data?.forEach { cityEntity ->
+                            cities.add(cityEntity.name)
+                        }
+                        showListCity(cities)
+                    }
+                    Status.ERROR -> {
+                        showToast("error")
+                    }
+                }
+            }
+        })
+
+    }
+
+    private fun showListCity(cities: ArrayList<String>) {
+
+        val builderSingle: AlertDialog.Builder = AlertDialog.Builder(this@MainActivity)
+        builderSingle.setIcon(R.drawable.ic_baseline_location_city)
+        builderSingle.setTitle("Select City")
+
+        val arrayAdapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_list_item_1, cities)
+
+        builderSingle.setNegativeButton("Cancel", DialogInterface.OnClickListener {
+                dialog, which -> dialog.dismiss()
+        })
+
+        builderSingle.setAdapter(arrayAdapter, DialogInterface.OnClickListener { dialog, which ->
+                val city = arrayAdapter.getItem(which)
+                sortByCity(city ?: "")
+
+//                val builderInner: AlertDialog.Builder = AlertDialog.Builder(this@MainActivity)
+//                builderInner.setMessage(strName)
+//                builderInner.setTitle("Your selected city is")
+//                builderInner.setPositiveButton("OK", DialogInterface.OnClickListener { dialog, which -> dialog.dismiss() })
+//                builderInner.show()
+            })
+        builderSingle.show()
     }
 
 }

@@ -59,18 +59,19 @@ class ContentRepository private constructor(private val remoteDataSource : Remot
         }.asLiveData()
     }
 
-    override fun getCities(): LiveData<Resource<PagedList<CityEntity>>> {
-        return object : NetworkBoundResource<PagedList<CityEntity>, List<ResponseCitiesItem>>(appExecutors){
-            override fun loadFromDB(): LiveData<PagedList<CityEntity>> {
+    override fun getCities(): LiveData<Resource<List<CityEntity>>> {
+        return object : NetworkBoundResource<List<CityEntity>, List<ResponseCitiesItem>>(appExecutors){
+            override fun loadFromDB(): LiveData<List<CityEntity>> {
                 val config = PagedList.Config.Builder()
                                                 .setEnablePlaceholders(false)
                                                 .setInitialLoadSizeHint(6)
                                                 .setPageSize(6)
                                                 .build()
-                return LivePagedListBuilder(localDataSource.getCities(), config).build()
+                //return LivePagedListBuilder(localDataSource.getCities(), config).build()
+                return localDataSource.getCities()
             }
 
-            override fun shouldFetch(data: PagedList<CityEntity>?): Boolean {
+            override fun shouldFetch(data: List<CityEntity>?): Boolean {
                 return data == null || data.isEmpty()
             }
             override fun createCall(): LiveData<ApiResponse<List<ResponseCitiesItem>>> {

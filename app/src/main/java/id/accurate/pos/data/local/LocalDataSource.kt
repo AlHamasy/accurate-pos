@@ -1,5 +1,6 @@
 package id.accurate.pos.data.local
 
+import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import id.accurate.pos.data.local.entity.CityEntity
 import id.accurate.pos.data.local.entity.UserEntity
@@ -18,7 +19,7 @@ class LocalDataSource private constructor(private val contentDao: ContentDao){
 
     fun getUsers() : DataSource.Factory<Int, UserEntity> = contentDao.getUsers()
 
-    fun getCities() : DataSource.Factory<Int, CityEntity> = contentDao.getCities()
+    fun getCities() : LiveData<List<CityEntity>> = contentDao.getCities()
 
     fun insertUsers(users : List<UserEntity>) = contentDao.insertUsers(users)
 

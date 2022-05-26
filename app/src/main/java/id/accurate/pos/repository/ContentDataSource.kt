@@ -10,7 +10,7 @@ import id.accurate.pos.vo.Resource
 interface ContentDataSource {
 
     fun getUsers() : LiveData<Resource<PagedList<UserEntity>>>
-    fun getCities() : LiveData<Resource<PagedList<CityEntity>>>
+    fun getCities() : LiveData<Resource<List<CityEntity>>>
     fun sortByName()  : LiveData<Resource<PagedList<UserEntity>>>
     fun sortByCity(city : String) : LiveData<Resource<PagedList<UserEntity>>>
     fun searchByName(city : String) : LiveData<Resource<PagedList<UserEntity>>>

@@ -1,48 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
-    app:cardElevation="5dp"
-    app:cardCornerRadius="5dp">
+    app:cardCornerRadius="5dp"
+    app:cardElevation="5dp">
 
     <LinearLayout
-        android:padding="10dp"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
 
         <TextView
+            android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="nama"
-            android:id="@+id/tv_name"/>
+            android:text="Asadullah Al Hamasy"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/tv_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="city"
-            android:id="@+id/tv_city"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
             android:text="address"
-            android:id="@+id/tv_address"/>
+            android:layout_marginTop="4dp"
+            app:drawableLeftCompat="@drawable/ic_baseline_location" />
 
         <TextView
+            android:id="@+id/tv_city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="phone"
-            android:id="@+id/tv_phone"/>
+            android:drawablePadding="4dp"
+            android:gravity="center_vertical"
+            android:text="city"
+            android:layout_marginTop="4dp"
+            app:drawableLeftCompat="@drawable/ic_baseline_location_city" />
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_marginTop="4dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="email"
-            android:id="@+id/tv_email"/>
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="4dp"
+                android:gravity="center_vertical"
+                android:text="phone"
+                app:drawableLeftCompat="@drawable/ic_baseline_local_phone" />
+
+            <TextView
+                android:layout_marginLeft="16dp"
+                android:id="@+id/tv_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawablePadding="4dp"
+                android:text="email"
+                android:gravity="center_vertical"
+                app:drawableLeftCompat="@drawable/ic_baseline_email" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
