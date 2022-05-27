@@ -1,4 +1,16 @@
 <resources>
     <string name="app_name">Accurate POS</string>
     <string name="error_message">Something error, please try again later</string>
+    <string name="query_hint_search">Search by name</string>
+    <string name="select_city">Select City</string>
+    <string name="cancel">Cancel</string>
+    <string name="add_success">Add user successful</string>
+    <string name="add_failed">Add user failed, try again later</string>
+    <string name="add_user_title">Add User</string>
+    <string name="empty_name">Name cannot be empty</string>
+    <string name="empty_address">Address cannot be empty</string>
+    <string name="empty_email">Email cannot be empty</string>
+    <string name="invalid_email">Invalid email address</string>
+    <string name="empty_phone">Phone number cannot be empty</string>
+    
 </resources>

@@ -2,6 +2,7 @@ package id.accurate.pos.data.remote
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import id.accurate.pos.data.remote.request.RequestUser
 import id.accurate.pos.data.remote.response.ResponseCitiesItem
 import id.accurate.pos.data.remote.response.ResponseUsersItem
 import id.accurate.pos.network.ApiClient
@@ -52,6 +53,22 @@ class RemoteDataSource {
             }
         })
         return resultCities
+    }
+
+    fun insertUser(requestUser: RequestUser): LiveData<String> {
+
+        val message = MutableLiveData<String>()
+        ApiClient.getService().insertUser(requestUser).enqueue(object : Callback<List<ResponseUsersItem>> {
+            override fun onResponse(call: Call<List<ResponseUsersItem>>, response: Response<List<ResponseUsersItem>>) {
+                if (response.isSuccessful){
+                    message.value = response.code().toString()
+                }
+            }
+            override fun onFailure(call: Call<List<ResponseUsersItem>>, t: Throwable) {
+                message.value = t.localizedMessage
+            }
+        })
+        return message
     }
 
 }

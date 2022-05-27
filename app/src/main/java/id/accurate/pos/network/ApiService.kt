@@ -4,8 +4,10 @@ import id.accurate.pos.data.remote.request.RequestUser
 import id.accurate.pos.data.remote.response.ResponseCitiesItem
 import id.accurate.pos.data.remote.response.ResponseUsersItem
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+
 
 interface ApiService {
 
@@ -13,10 +15,9 @@ interface ApiService {
     fun getUsers() : Call<List<ResponseUsersItem>>
 
     @POST("accurate/user")
-    fun insertUser(requestUser: RequestUser) : Call<List<ResponseUsersItem>>
+    fun insertUser(@Body requestUser: RequestUser) : Call<List<ResponseUsersItem>>
 
     @GET("accurate/city")
     fun getCities() : Call<List<ResponseCitiesItem>>
-
 
 }

@@ -5,6 +5,7 @@ import androidx.paging.PagedList
 import id.accurate.pos.R
 import id.accurate.pos.data.local.entity.CityEntity
 import id.accurate.pos.data.local.entity.UserEntity
+import id.accurate.pos.data.remote.request.RequestUser
 import id.accurate.pos.vo.Resource
 
 interface ContentDataSource {
@@ -14,5 +15,6 @@ interface ContentDataSource {
     fun sortByName()  : LiveData<Resource<PagedList<UserEntity>>>
     fun sortByCity(city : String) : LiveData<Resource<PagedList<UserEntity>>>
     fun searchByName(city : String) : LiveData<Resource<PagedList<UserEntity>>>
+    fun insertUser(requestUser: RequestUser) : LiveData<String>
 
 }

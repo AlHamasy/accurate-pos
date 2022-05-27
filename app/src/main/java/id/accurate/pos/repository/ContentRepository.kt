@@ -8,6 +8,7 @@ import id.accurate.pos.data.local.entity.CityEntity
 import id.accurate.pos.data.local.entity.UserEntity
 import id.accurate.pos.data.remote.ApiResponse
 import id.accurate.pos.data.remote.RemoteDataSource
+import id.accurate.pos.data.remote.request.RequestUser
 import id.accurate.pos.data.remote.response.ResponseCitiesItem
 import id.accurate.pos.data.remote.response.ResponseUsersItem
 import id.accurate.pos.utils.AppExecutors
@@ -37,7 +38,8 @@ class ContentRepository private constructor(private val remoteDataSource : Remot
                 return LivePagedListBuilder(localDataSource.getUsers(), config).build()
             }
             override fun shouldFetch(data: PagedList<UserEntity>?): Boolean {
-                return data == null || data.isEmpty()
+                //return data == null || data.isEmpty()
+                return true
             }
             override fun createCall(): LiveData<ApiResponse<List<ResponseUsersItem>>> {
                 return remoteDataSource.getUsers()
@@ -62,15 +64,8 @@ class ContentRepository private constructor(private val remoteDataSource : Remot
     override fun getCities(): LiveData<Resource<List<CityEntity>>> {
         return object : NetworkBoundResource<List<CityEntity>, List<ResponseCitiesItem>>(appExecutors){
             override fun loadFromDB(): LiveData<List<CityEntity>> {
-                val config = PagedList.Config.Builder()
-                                                .setEnablePlaceholders(false)
-                                                .setInitialLoadSizeHint(6)
-                                                .setPageSize(6)
-                                                .build()
-                //return LivePagedListBuilder(localDataSource.getCities(), config).build()
                 return localDataSource.getCities()
             }
-
             override fun shouldFetch(data: List<CityEntity>?): Boolean {
                 return data == null || data.isEmpty()
             }
@@ -106,7 +101,6 @@ class ContentRepository private constructor(private val remoteDataSource : Remot
                 return remoteDataSource.getUsers()
             }
             override fun saveCallResult(data: List<ResponseUsersItem>) {
-
             }
         }.asLiveData()
     }
@@ -129,7 +123,6 @@ class ContentRepository private constructor(private val remoteDataSource : Remot
                 return remoteDataSource.getUsers()
             }
             override fun saveCallResult(data: List<ResponseUsersItem>) {
-
             }
         }.asLiveData()
     }
@@ -151,8 +144,13 @@ class ContentRepository private constructor(private val remoteDataSource : Remot
                 return remoteDataSource.getUsers()
             }
             override fun saveCallResult(data: List<ResponseUsersItem>) {
-
             }
         }.asLiveData()
     }
+
+    override fun insertUser(requestUser: RequestUser): LiveData<String> {
+        return remoteDataSource.insertUser(requestUser)
+    }
+
+
 }

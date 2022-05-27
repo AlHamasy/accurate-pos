@@ -45,7 +45,7 @@ class MainActivity : AppCompatActivity() {
 
         val menuItem = menu?.findItem(R.id.menu_search_name)
         val searchView = menuItem?.actionView as SearchView
-        searchView.queryHint = "Search by name"
+        searchView.queryHint = resources.getString(R.string.query_hint_search)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(p0: String): Boolean {
                 return false
@@ -62,10 +62,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when(item.itemId){
-           // R.id.menu_sort_city -> sortByCity("Malang")
             R.id.menu_sort_city -> {
-                //showListCity(showCities())
-                //getCities()
                 showCities()
             }
             R.id.menu_sort_name -> sortByName()
@@ -189,7 +186,6 @@ class MainActivity : AppCompatActivity() {
             if (it != null) {
                 when (it.status) {
                     Status.LOADING -> {
-
                     }
                     Status.SUCCESS -> {
                         it.data?.forEach { cityEntity ->
@@ -198,35 +194,28 @@ class MainActivity : AppCompatActivity() {
                         showListCity(cities)
                     }
                     Status.ERROR -> {
-                        showToast("error")
+                        showToast(resources.getString(R.string.error_message))
                     }
                 }
             }
         })
-
     }
 
     private fun showListCity(cities: ArrayList<String>) {
 
         val builderSingle: AlertDialog.Builder = AlertDialog.Builder(this@MainActivity)
         builderSingle.setIcon(R.drawable.ic_baseline_location_city)
-        builderSingle.setTitle("Select City")
+        builderSingle.setTitle(resources.getString(R.string.select_city))
 
         val arrayAdapter = ArrayAdapter(this@MainActivity, android.R.layout.simple_list_item_1, cities)
 
-        builderSingle.setNegativeButton("Cancel", DialogInterface.OnClickListener {
+        builderSingle.setNegativeButton(resources.getString(R.string.cancel), DialogInterface.OnClickListener {
                 dialog, which -> dialog.dismiss()
         })
 
         builderSingle.setAdapter(arrayAdapter, DialogInterface.OnClickListener { dialog, which ->
                 val city = arrayAdapter.getItem(which)
                 sortByCity(city ?: "")
-
-//                val builderInner: AlertDialog.Builder = AlertDialog.Builder(this@MainActivity)
-//                builderInner.setMessage(strName)
-//                builderInner.setTitle("Your selected city is")
-//                builderInner.setPositiveButton("OK", DialogInterface.OnClickListener { dialog, which -> dialog.dismiss() })
-//                builderInner.show()
             })
         builderSingle.show()
     }
